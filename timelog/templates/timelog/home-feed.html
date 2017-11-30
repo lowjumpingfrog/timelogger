@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div style="position: relative; height: 100vh;">
+	<div class="jumbotron text-center" style="position: absolute; top: 50%; left: 50%;transform: translate(-50%, -50%); width:100%">
+		<h1>Time Log</h1> <a href='{% url "timelog:add" %}'><button type="button" class="btn btn-default">Add Another</button></a>
+	    <div class="container-fluid align">
+			<h5>Recent Entries</h5>
+			<table style="width:100%" class="table table-striped">
+				<thead>
+					<tr>
+						<th>Record</th>
+						<th>Start</th>
+						<th>End</th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for obj in object_list %}
+					<tr>
+						<td class="text-left">
+							<a href='{% url "timelog:update" pk=obj.id %}'>{{ obj.category }}
+							<i class="glyphicon glyphicon-pencil text-left"></i></a>
+						</td>  
+						<td class="text-left">
+							{{ obj.work_start_time }}
+						</td>
+						<td class="text-left">
+							{{ obj.work_end_time }}
+						</td>
+						<td class="text-left">
+							<a href='{% url "timelog:delete" pk=obj.id %}'><i class="glyphicon glyphicon-remove-circle text-right"></i></a>
+						</td>
+					</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+{% endblock content %}

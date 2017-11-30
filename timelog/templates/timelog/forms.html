@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div style="position: relative; height: 100vh;">
+	<div class="jumbotron text-center" style="position: absolute; top: 50%; left: 50%;transform: translate(-50%, -50%); width:100%">
+	<h1>{{ title }}</h1>
+	    <div class="container-fluid align-middle">
+	      <div class="row">
+	            <form action="." class="form" method="post">
+	                {% crispy form %}
+	            </form>
+	      </div>
+	    </div>
+	</div>
+</div>
+{% endblock content %}
