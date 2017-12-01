@@ -23,13 +23,19 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'llr-c-+a!=m)d)_-*at12i4o(r!i2@05l-@8c^t)v3ig)rl+(h'
+SECRET_KEY = os.environ.get('SECRET_KEY','llr-c-+a!=m)d)_-*at12i4o(r!i2@05l-@8c^t)v3ig)rl+(h')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['sps-timelogger.herokuapp.com']
 
+EMAIL_HOST = 'box608.bluehost.com'
+EMAIL_PORT = 465
+EMAIL_HOST_USER = 'high@lowjumpingfrog.com'
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_PASSWORD')
+EMAIL_USE_TLS = True
+DEFAULT_FROM_EMAIL = 'high@lowjumpingfrog.com'
 
 # Application definition
 
@@ -86,16 +92,12 @@ WSGI_APPLICATION = 'timelogger.wsgi.application'
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME':'timelogger',#NAME': 'PS_Qgenda_Data',
-        'USER':'', #'USER': 'codemonster',
-        'PASSWORD':'',#'PASSWORD': 'M0reW0rkP1ease',
-        'HOST': '127.0.0.1',
-        'PORT': '3306',
-    }
-}
 
+}
+import dj_database_url
+db_from_env = dj_database_url.config()
+DATABASES['default'].update(db_from_env)
+DATABASES['default']['CONN_MAX_AGE'] = 500
 
 # Password validation
 # https://docs.djangoproject.com/en/1.11/ref/settings/#auth-password-validators
