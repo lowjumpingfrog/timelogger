@@ -1,0 +1,16 @@
+{% load staticfiles %}
+<!doctype html>
+<html>
+<head>
+	<title>{% block head_title %}SPS Time Logger{% endblock head_title %}</title>
+	<link rel="shortcut icon" href="{% static 'timelog/favicon/favicon.ico' %}" type="image/x-icon"/>
+	{% include 'includes/head.html' %}
+</head>
+<body>
+
+	<div class="container">
+		{% block content %}{% endblock content %}
+	</div>
+	{% include 'includes/body.html' %}
+</body>
+</html>
