@@ -93,7 +93,7 @@ WSGI_APPLICATION = 'timelogger.wsgi.application'
 
 DATABASES = {
     'default': {
-            'ENGINE': 'django.db.backends.mysql',
+            'ENGINE': 'django.db.backends.sqlite3',
     }
 
 }
