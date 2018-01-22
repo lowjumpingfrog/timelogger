@@ -19,10 +19,19 @@ from django.contrib.auth import views as auth_views
 from django.views.generic import TemplateView
 from django.contrib.auth.views import LoginView, PasswordResetView, LogoutView
 from timelog.views import HomeView
+from django.contrib.admin import site
+#import adminactions.actions as actions
+
+# register all adminactions
+#admin.autodiscover()
+#actions.add_to_site(admin.site)
+
+admin.site.site_header = "SPS Time Logger"
 
 urlpatterns = [
     url(r'^$',HomeView.as_view(),name='home'),
     url(r'^admin/', admin.site.urls),
+    #url(r'^adminactions/', include('adminactions.urls')),
     url(r'^login/$', LoginView.as_view(), name='login'),
     url(r'^logout/$', LogoutView.as_view(), name='logout'),
     url(r'^timelog/', include('timelog.urls', namespace='timelog')),

@@ -1,7 +1,7 @@
 from django.conf import settings
 from django.db import models
 
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 
 
 class WorkCategory(models.Model):
@@ -18,6 +18,7 @@ class WorkCategory(models.Model):
 	# order the query sets by current first
 	class Meta:
 		ordering = ['-updated', '-timestamp']
+		verbose_name_plural = "Categories"
 
 	def get_absolute_url(self):
 		return reverse('work_categories:list',kwargs={'pk': self.pk})

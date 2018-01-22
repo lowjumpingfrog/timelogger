@@ -8,10 +8,12 @@ from .forms import TimeLogForm
 
 class HomeView(LoginRequiredMixin,View):
 	def get(self, request, *args, **kwargs):
-		if not request.user.is_authenticated():
+		if not request.user.is_authenticated:
 			return render(request, "home.html", {})
 		user = request.user
-		qs = TimeLog.objects.filter(user=self.request.user).order_by("-updated")[:3]
+		if user.is_staff:
+			return redirect('/admin/')
+		qs = TimeLog.objects.filter(user=self.request.user).order_by("-updated")[:10]
 		return render(request, "timelog/home-feed.html", {'object_list':qs})
 
 class TimeLogListView(LoginRequiredMixin, ListView):
@@ -25,7 +27,7 @@ class TimeLogDetailView(LoginRequiredMixin,DetailView):
 class TimeLogFormView(LoginRequiredMixin,FormView):
 	template_name = 'timelog/forms.html'
 	form_class = TimeLogForm
-
+	
 	def get_queryset(self):
 		return TimeLog.objects.filter(user=self.request.user)
 	

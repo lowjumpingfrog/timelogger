@@ -88,9 +88,9 @@ WSGI_APPLICATION = 'timelogger.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME':'timelogger',#NAME': 'PS_Qgenda_Data',
-        'USER':'', #'USER': 'codemonster',
-        'PASSWORD':'roo',#'PASSWORD': 'M0reW0rkP1ease',
+        'NAME':'timelogger',
+        'USER':'root', 
+        'PASSWORD':'',
         'HOST': '127.0.0.1',
         'PORT': '3306',
     }
@@ -115,8 +115,18 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+#certs
+CORS_REPLACE_HTTPS_REFERER      = False
+HOST_SCHEME                     = "http://"
+SECURE_PROXY_SSL_HEADER         = None
+SECURE_SSL_REDIRECT             = False
+SESSION_COOKIE_SECURE           = False
+CSRF_COOKIE_SECURE              = False
+SECURE_HSTS_SECONDS             = None
+SECURE_HSTS_INCLUDE_SUBDOMAINS  = False
+SECURE_FRAME_DENY               = False
 
-# Internationalization
+# Internationalization**
 # https://docs.djangoproject.com/en/1.11/topics/i18n/
 
 LANGUAGE_CODE = 'en-us'

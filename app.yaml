@@ -1,3 +1,17 @@
-entrypoint: python manage.py runserver
-env: flex
+# [START runtime]
 runtime: python
+env: flex
+entrypoint: gunicorn -b :$PORT timelogger.wsgi
+
+beta_settings:
+    cloud_sql_instances: sps-productivity:us-central1:sps-productivity
+
+runtime_config:
+  python_version: 3
+
+handlers:
+- url: /static
+  static_dir: static/
+- url: .*
+  script: timelogger.wsgi.application  
+# [END runtime]

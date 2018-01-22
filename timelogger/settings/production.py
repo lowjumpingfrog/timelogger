@@ -28,14 +28,14 @@ SECRET_KEY = os.environ.get('SECRET_KEY','llr-c-+a!=m)d)_-*at12i4o(r!i2@05l-@8c^
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['sps-timelogger.herokuapp.com']
+ALLOWED_HOSTS = ['*']
 
-EMAIL_HOST = 'box608.bluehost.com'
-EMAIL_PORT = 465
-EMAIL_HOST_USER = 'high@lowjumpingfrog.com'
-EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_PASSWORD')
-EMAIL_USE_TLS = True
-DEFAULT_FROM_EMAIL = 'high@lowjumpingfrog.com'
+#EMAIL_HOST = 'box608.bluehost.com'
+#EMAIL_PORT = 465
+#EMAIL_HOST_USER = 'high@lowjumpingfrog.com'
+#EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_PASSWORD')
+#EMAIL_USE_TLS = True
+#DEFAULT_FROM_EMAIL = 'high@lowjumpingfrog.com'
 
 # Application definition
 
@@ -48,8 +48,10 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'timelog',
     'work_type',
+    'reasons',
     'crispy_forms',
     'datetimewidget',
+    'facilities',
 ]
 
 MIDDLEWARE = [
@@ -93,14 +95,24 @@ WSGI_APPLICATION = 'timelogger.wsgi.application'
 
 DATABASES = {
     'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME':'timelogger',
+        'USER':'codemonster', 
+        'PASSWORD':'M0reW0rkP1ease',
+        'PORT': '3306',
     }
-
 }
-import dj_database_url
-db_from_env = dj_database_url.config()
-DATABASES['default'].update(db_from_env)
-DATABASES['default']['CONN_MAX_AGE'] = 500
+
+# In the flexible environment, you connect to CloudSQL using a unix socket.
+# Locally, you can use the CloudSQL proxy to proxy a localhost connection
+# to the instance
+# cloud_sql_proxy -instances=sps-productivity:us-central1:sps-productivity=tcp:3306 -credential_file=/Users/jnorton/Dropbox/Projects/sps-productivity/CloudDB_SSL/SPS\ Productivity-3bc097bf5ad5.json
+DATABASES['default']['HOST'] = '/cloudsql/sps-productivity:us-central1:sps-productivity'
+if os.getenv('GAE_INSTANCE'):
+    pass
+else:
+    DATABASES['default']['HOST'] = '127.0.0.1'
+# [END dbconfig]
 
 # Password validation
 # https://docs.djangoproject.com/en/1.11/ref/settings/#auth-password-validators
@@ -148,6 +160,16 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
-STATIC_URL = '/static/'
+
+STATIC_URL = 'https://storage.googleapis.com/staging.sps-productivity.appspot.com/static/'
+STATIC_ROOT = 'static/'
+#STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+#STATIC_URL = '/static/'
+
+#Qgenda Settings
+QGENDA_EMAIL = 'lowjumpingfrog@gmail.com'
+QGENDA_PASSWORD = 'ojL7B/4xaB44uE6'
+QGENDA_LOGIN_ENDPOINT = 'https://api.qgenda.com/v2/login'
+QGENDA_GET_ENDPOINT = 'https://api.qgenda.com/v2/schedule'
+QGENDA_COMPANY_KEY = 'c7649103-dab1-4787-81aa-78873b77733a'
 

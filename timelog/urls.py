@@ -6,6 +6,7 @@ from django.views.generic import TemplateView
 from .views import (
     TimeLogListView, TimeLogDetailView, TimeLogCreateView, TimeLogUpdateView, TimeLogDeleteView
 )
+app_name = 'timelog'
 
 urlpatterns = [
     url(r'list/^$',TimeLogListView.as_view(),name='list'),
