@@ -107,11 +107,11 @@ DATABASES = {
 # Locally, you can use the CloudSQL proxy to proxy a localhost connection
 # to the instance
 # cloud_sql_proxy -instances=sps-productivity:us-central1:sps-productivity=tcp:3306 -credential_file=/Users/jnorton/Dropbox/Projects/sps-productivity/CloudDB_SSL/SPS\ Productivity-3bc097bf5ad5.json
-DATABASES['default']['HOST'] = '/cloudsql/sps-productivity:us-central1:sps-productivity'
-if os.getenv('GAE_INSTANCE'):
-    pass
-else:
-    DATABASES['default']['HOST'] = '127.0.0.1'
+#DATABASES['default']['HOST'] = '/cloudsql/sps-productivity:us-central1:sps-productivity'
+#if os.getenv('GAE_INSTANCE'):
+#    pass
+#else:
+#    DATABASES['default']['HOST'] = '127.0.0.1'
 # [END dbconfig]
 
 # Password validation
@@ -161,10 +161,10 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
-STATIC_URL = 'https://storage.googleapis.com/staging.sps-productivity.appspot.com/static/'
-STATIC_ROOT = 'static/'
-#STATIC_ROOT = os.path.join(BASE_DIR, 'static')
-#STATIC_URL = '/static/'
+#STATIC_URL = 'https://storage.googleapis.com/staging.sps-productivity.appspot.com/static/'
+#STATIC_ROOT = 'static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATIC_URL = '/static/'
 
 #Qgenda Settings
 QGENDA_EMAIL = 'lowjumpingfrog@gmail.com'
