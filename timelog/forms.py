@@ -20,6 +20,7 @@ class TimeLogForm(forms.ModelForm):
 			'work_start_time',
 			'work_end_time',
 			'comment',
+			'billable',
 		]
 		dateTimeOptions = {
 			'format': 'dd/mm/yyyy HH:ii',
@@ -59,6 +60,7 @@ class TimeLogForm(forms.ModelForm):
 		        'work_start_time',
 		        'work_end_time',
 		        'comment',
+		        'billable',
 		    ),
 		    ButtonHolder(
     			Submit('Save', 'Save', css_class='button white'),
@@ -71,6 +73,6 @@ class TimeLogForm(forms.ModelForm):
 		super(TimeLogForm, self).__init__(*args, **kwargs)
 		#get the users group id
 		group_id = user.groups.values_list('id', flat=True).first()
-		self.fields['reason'].queryset = Reasons.objects.filter(group_id=group_id)
+		self.fields['reason'].queryset = Reasons.objects.filter(group_id=group_id).order_by('reason')
 
 		

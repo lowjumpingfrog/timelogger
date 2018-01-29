@@ -30,12 +30,16 @@ DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
-#EMAIL_HOST = 'box608.bluehost.com'
-#EMAIL_PORT = 465
-#EMAIL_HOST_USER = 'high@lowjumpingfrog.com'
-#EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_PASSWORD')
-#EMAIL_USE_TLS = True
-#DEFAULT_FROM_EMAIL = 'high@lowjumpingfrog.com'
+SESSION_EXPIRE_AT_BROWSER_CLOSE = False
+SESSION_COOKIE_AGE = 31557600 # expire in a year
+
+EMAIL_HOST = 'smtp.office365.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'device@spsradiology.com'
+EMAIL_HOST_PASSWORD = 'D3vic34$P$'
+EMAIL_USE_TLS = True
+EMAIL_NO_REPLY = True
+DEFAULT_FROM_EMAIL = 'device@spsradiology.com'
 
 # Application definition
 
@@ -52,6 +56,8 @@ INSTALLED_APPS = [
     'crispy_forms',
     'datetimewidget',
     'facilities',
+    'related_admin',
+    'import_export',
 ]
 
 MIDDLEWARE = [
@@ -155,7 +161,7 @@ USE_I18N = True
 
 USE_L10N = True
 
-USE_TZ = True
+USE_TZ = False
 
 
 # Static files (CSS, JavaScript, Images)

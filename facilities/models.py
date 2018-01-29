@@ -9,6 +9,7 @@ class Facilities(models.Model):
 
 	class Meta:
 		verbose_name_plural = "Facilities"
+		ordering = ['facility']
 
 	def __str__(self):
 		return self.facility

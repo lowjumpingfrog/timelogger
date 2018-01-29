@@ -5,7 +5,8 @@
 				<thead>
 					<caption>Recent Entries</caption>
 					<tr class="success">
-						<th>Record</th>
+						<th>Edit</th>
+						<th>Reason</th>
 						<th>Start</th>
 						<th>End</th>
 						<th></th>
@@ -17,6 +18,9 @@
 						<td class="text-left">
 							<a href='{% url "timelog:update" pk=obj.id %}'>{{ obj.category }}
 							<i class="glyphicon glyphicon-pencil text-left"></i></a>
+						</td>
+						<td class="text-left">
+							{{ obj.reason }}
 						</td>  
 						<td class="text-left">
 							{{ obj.work_start_time }}

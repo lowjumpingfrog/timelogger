@@ -6,6 +6,9 @@ from django.conf import settings
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 def get_qgenda_shift(email,date):
+	if not email or not date:
+		return 'Invalid Lookup'
+		
 	shift = []
 	login_error = ''
 	get_error = ''
@@ -61,5 +64,5 @@ def get_qgenda_shift(email,date):
 		return ",".join(shift)
 	else:
 		#do some logging here
-		return ''
+		return 'Nothing Found'
 	

@@ -22,6 +22,7 @@ class TimeLog(models.Model):
 	work_end_time	= models.DateTimeField(auto_now=False, auto_now_add=False)
 	comment 		= models.CharField(max_length=255, null=True,blank=True)
 	shift 			= models.CharField(max_length=255, null=True,blank=True)
+	billable		= models.BooleanField(default=False)
 	reconciled		= models.BooleanField(default=False)
 	timestamp 		= models.DateTimeField(auto_now_add=True)
 	updated 		= models.DateTimeField(auto_now=True)

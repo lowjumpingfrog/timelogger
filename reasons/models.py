@@ -15,7 +15,7 @@ class Reasons(models.Model):
 		verbose_name_plural = "Reasons"
 
 	def __str__(self):
-		return self.reason
+		return self.reason + ' - ' + str(self.group)
 	
 	def get_absolute_url(self):
 		return reverse('home',kwargs={})
