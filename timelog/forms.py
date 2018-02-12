@@ -28,7 +28,6 @@ class TimeLogForm(forms.ModelForm):
 			'showMeridian' : True,
 			'pickerPosition' : 'bottom-left',
 			'minuteStep' : 15,
-			'endDate':  str(datetime.date.today()+datetime.timedelta(days=1))
 		}
 		widgets = {
             #Use localization and bootstrap 3
