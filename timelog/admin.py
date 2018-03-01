@@ -27,12 +27,12 @@ class TimeLogResource(ModelResource):
 
     class Meta:
         model = TimeLog
-        fields = ('user','facility','work_start_time','work_end_time', 'reason','shift','reconciled','billable')
-        export_order = ('user','facility','work_start_time','work_end_time', 'reason','shift','reconciled','billable')
+        fields = ('user','facility','work_start_time','work_end_time', 'reason','shift','comment','reconciled','billable')
+        export_order = ('user','facility','work_start_time','work_end_time', 'reason','shift','comment','reconciled','billable')
 
 class TimeLogAdmin(ExportMixin, RelatedFieldAdmin):
     #list_display = ('reason','facility')
-    list_display = ('user__username','facility__facility','work_start_time','work_end_time', 'reason__reason','shift','reconciled','billable') 
+    list_display = ('user__username','facility__facility','work_start_time','work_end_time', 'reason__reason','shift','comment','reconciled','billable') 
     resource_class = TimeLogResource
 
 admin.site.register(TimeLog,TimeLogAdmin)
