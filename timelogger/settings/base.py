@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'work_type',
     'crispy_forms',
     'datetimewidget',
+    'reports',
 ]
 
 MIDDLEWARE = [
@@ -89,7 +90,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME':'timelogger',
-        'USER':'root', 
+        'USER':'root',
         'PASSWORD':'',
         'HOST': '127.0.0.1',
         'PORT': '3306',
@@ -144,4 +145,3 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATIC_URL = '/static/'
-

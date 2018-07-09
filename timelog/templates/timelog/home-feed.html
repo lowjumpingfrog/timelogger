@@ -1,38 +1,47 @@
 {% extends "base.html" %}
 {% block content %}
 		<h1>Time Log</h1> <a href='{% url "timelog:add" %}'><button type="button" class="btn btn-lg btn-success align-center">Add</button></a>
-			<table style="width:100%" class="table table-striped">
+		<a href='{% url "timelog:list" %}'><button type="button" class="btn btn-lg btn-success align-center">Show All</button></a>
+
+			<table style="width:100%" class="table table-hover">
 				<thead>
 					<caption>Recent Entries</caption>
 					<tr class="success">
-						<th>Edit</th>
+						<th class="text-center"><h4 class="glyphicon glyphicon-edit"></h4></th>
 						<th>Reason</th>
 						<th>Start</th>
 						<th>End</th>
-						<th></th>
+						<th>Time</th>
 					</tr>
 				</thead>
 				<tbody>
 					{% for obj in object_list %}
-					<tr>
-						<td class="text-left">
+					{% if obj.reconciled %}
+					<tr class="bg-info">
+						<td class="text-center">
+							<i class="glyphicon glyphicon-ok-circle text-left"></i>
+						</td>
+					{% else %}
+					<tr class="bg-warning">
+						<td class="text-center">
 							<a href='{% url "timelog:update" pk=obj.id %}'>{{ obj.category }}
 							<i class="glyphicon glyphicon-pencil text-left"></i></a>
 						</td>
+					{% endif %}
 						<td class="text-left">
 							{{ obj.reason }}
-						</td>  
+						</td>
 						<td class="text-left">
 							{{ obj.work_start_time }}
 						</td>
 						<td class="text-left">
 							{{ obj.work_end_time }}
-						</td>
 						<td class="text-left">
-							<a href='{% url "timelog:delete" pk=obj.id %}'><i class="glyphicon glyphicon-remove-circle text-right"></i></a>
+							{{ obj.duration }}
 						</td>
 					</tr>
 					{% endfor %}
 				</tbody>
 			</table>
+
 {% endblock content %}
