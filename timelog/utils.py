@@ -74,27 +74,37 @@ def get_qgenda_shift(email,date):
 def get_pay_record(record):
 	pay = 0
 	memo = []
+	day_filter = ''
 	this_reason = list(Reasons.objects.filter(reason = record.reason).values('reason','billable','group_id'))[0]
 	if this_reason['billable']:
 		day_of_week = record.work_start_time.weekday()
+
 		if record.work_start_time.date() in settings.SPS_HOLIDAYS:
 			day_filter = 'hol'
-		if day_of_week >= 0 and day_of_week < 5:
+		if day_of_week >= 0 and day_of_week < 5 and day_filter == '':
 			day_filter = 'wkd'
-		if day_of_week == 5 or day_of_week == 6:
+		if day_of_week == 5 or day_of_week == 6 and day_filter == '':
 			day_filter = 'wkend'
+
 		work_cats = WorkCategory.objects.filter(group=this_reason['group_id']).filter(Q(day_flag = day_filter) | Q(day_flag = 'any')).values('work_category','start_time','stop_time','rate')
+
 
 		for row in work_cats:
 			pay_window = calculate_pay_window(row['start_time'],row['stop_time'],record.work_start_time.replace(second=0,microsecond=0),record.work_end_time.replace(second=0,microsecond=0))
+
 			time = round(calculate_duration(pay_window[0],pay_window[1],record.work_start_time.replace(second=0,microsecond=0),record.work_end_time.replace(second=0,microsecond=0)),2)
+
 			if time > 0:
 				pay = pay + time*float(row['rate'])
 				memo.append(str('{0:.2f}'.format(time)) + ' hrs @ $' + str(row['rate'])+'/hr')
 		if len(memo) > 1:
 			pay_memo = ', '.join(memo)
 		else:
-			pay_memo = str(memo[0])
+			if len(memo) == 1:
+				pay_memo = str(memo[0])
+			else:
+				pay_memo = ''
+
 		pay = '{0:.2f}'.format(pay)
 	else:
 		pay = 0
@@ -104,15 +114,15 @@ def get_pay_record(record):
 
 def calculate_duration(win_open,win_closed,work_start,work_end):
     duration = 0
-    if work_start < win_open:
-        if  work_end < win_closed:
+    if work_start <= win_open:
+        if  work_end <= win_closed:
             return (work_end - win_open)/ dt.timedelta(hours=1)
-        if work_end > win_closed:
+        if work_end >= win_closed:
             return (win_closed - win_open)/ dt.timedelta(hours=1)
-    if work_start > win_open:
-        if  work_end < win_closed:
+    if work_start >= win_open:
+        if  work_end <= win_closed:
             return (work_end - work_start)/ dt.timedelta(hours=1)
-        if work_end > win_closed:
+        if work_end >= win_closed:
             return (win_closed - work_start)/ dt.timedelta(hours=1)
     return duration
 

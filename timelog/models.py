@@ -51,7 +51,7 @@ class TimeLog(models.Model):
 		delta = self.work_end_time - self.work_start_time
 		hours, remainder = divmod(delta.total_seconds(), 3600)
 		minutes, seconds = divmod(remainder, 60)
-		return '%s h : %s m' % ('{:0>2}'.format(int(hours)), '{:0>2}'.format(int(minutes)))
+		return '%sh : %sm' % ('{:0>2}'.format(int(hours)), '{:0>2}'.format(int(minutes)))
 
 	duration = property(_get_duration)
 
