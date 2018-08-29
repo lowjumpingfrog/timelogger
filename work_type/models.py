@@ -1,6 +1,7 @@
 from django.conf import settings
 from django.db import models
 from django.urls import reverse
+from constance import config
 
 class WorkGroup(models.Model):
 
@@ -34,8 +35,8 @@ class WorkCategory(models.Model):
 	start_time			= models.TimeField(auto_now=False,auto_now_add=False)
 	stop_time			= models.TimeField(auto_now=False,auto_now_add=False)
 	points_per_hr		= models.DecimalField(max_digits=6, decimal_places=3, blank=False)
-	daytime_rate_factor = models.DecimalField(max_digits=6, decimal_places=3, blank=False)
-	rate 				= models.DecimalField(max_digits=6, decimal_places=2, blank=False)
+	#daytime_rate_factor = models.DecimalField(max_digits=6, decimal_places=3, blank=False)
+	#rate 				= models.DecimalField(max_digits=6, decimal_places=2, blank=False)
 	timestamp 			= models.DateTimeField(auto_now_add=True)
 	updated 			= models.DateTimeField(auto_now=True)
 
@@ -43,6 +44,11 @@ class WorkCategory(models.Model):
 	class Meta:
 		ordering = ['-updated', '-timestamp']
 		verbose_name_plural = "Categories"
+
+	def _get_rate(self):
+		return round(config.DAY_RATE*float(self.points_per_hr),2)
+
+	rate = property(_get_rate)
 
 	def get_absolute_url(self):
 		return reverse('work_categories:list',kwargs={'pk': self.pk})

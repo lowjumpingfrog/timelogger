@@ -83,6 +83,8 @@ INSTALLED_APPS = [
     'related_admin',
     'import_export',
     'rangefilter',
+    'constance',    
+    'constance.backends.database','
 ]
 
 MIDDLEWARE = [
@@ -202,15 +204,19 @@ USE_TZ = False
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATIC_URL = '/static/'
 
-#Qgenda Settings
-QGENDA_EMAIL =os.environ.get('QGENDA_EMAIL', None)
-QGENDA_PASSWORD = os.environ.get('QGENDA_PASSWORD', None)
-QGENDA_LOGIN_ENDPOINT = 'https://api.qgenda.com/v2/login'
-QGENDA_GET_ENDPOINT = 'https://api.qgenda.com/v2/schedule'
-QGENDA_COMPANY_KEY = os.environ.get('QGENDA_COMPANY_KEY', None)
+CONSTANCE_BACKEND = 'constance.backends.database.DatabaseBackend'
+CONSTANCE_IGNORE_ADMIN_VERSION_CHECK = True
+CONSTANCE_SUPERUSER_ONLY =  False
 
-# Person who gets notified of problems
-OH_SHIT_CONTACT = os.environ.get('OH_SHIT_CONTACT', None)
+CONSTANCE_CONFIG = {
+    'DAY_RATE': (3400.00, 'Radiologist Day Rate',float),
+    'QGENDA_EMAIL': ('','Email for Qgenda Account Login', str),
+    'QGENDA_PASSWORD': ('','Password for Qgenda Account', str),
+    'QGENDA_COMPANY_KEY':('c7649103-dab1-4787-81aa-78873b77733a','Qgenda Company Key', str),
+    'QGENDA_LOGIN_ENDPOINT':('https://api.qgenda.com/v2/login','URL for Qgenda API Login', str),
+    'QGENDA_GET_ENDPOINT':('https://api.qgenda.com/v2/schedule','URL for Qgenda Schedule API', str),
+    'ADMIN_CONTACT_EMAIL':('','Email for sending application errors', str),
+}
 
 #Holiday Rules
 class SPS_Holiday_Calendar(AbstractHolidayCalendar):

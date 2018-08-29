@@ -2,11 +2,12 @@ import json
 import requests
 import urllib3
 from django.conf import settings
+from constance import config
 import datetime as dt
 from work_type.models import WorkCategory
 from reasons.models import Reasons
-from django.conf import settings
 from django.db.models import Q
+
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
@@ -17,11 +18,11 @@ def get_qgenda_shift(email,date):
 	shift = []
 	login_error = ''
 	get_error = ''
-	credentials = {'email': settings.QGENDA_EMAIL, 'password': settings.QGENDA_PASSWORD}
+	credentials = {'email': config.QGENDA_EMAIL, 'password': config.QGENDA_PASSWORD}
 
 	# try to login
 	try:
-	    login_request = requests.post(settings.QGENDA_LOGIN_ENDPOINT,data=credentials,verify=False,timeout=5)
+	    login_request = requests.post(config.QGENDA_LOGIN_ENDPOINT,data=credentials,verify=False,timeout=5)
 	    login_request.raise_for_status()
 	except requests.exceptions.HTTPError as errh:
 	    login_error = "Http Error:"+ errh
@@ -41,11 +42,11 @@ def get_qgenda_shift(email,date):
 	access_token = login_response["access_token"]
 	# form get request
 	get_header = {'Authorization': 'bearer ' + access_token, 'Content-Type': 'application/json', 'Accept-Encoding': '*'}
-	get_request = 'companyKey='+settings.QGENDA_COMPANY_KEY+'&startDate='+date+'&$select=Date,TaskAbbrev,StaffEmail&$filter=IsPublished&$filter=tolower(StaffEmail)eq\''+email+'\''
+	get_request = 'companyKey='+config.QGENDA_COMPANY_KEY+'&startDate='+date+'&$select=Date,TaskAbbrev,StaffEmail&$filter=IsPublished&$filter=tolower(StaffEmail)eq\''+email+'\''
 
 	#try the get request
 	try:
-	    get_response = requests.get(settings.QGENDA_GET_ENDPOINT,params=get_request,headers=get_header,timeout=5)
+	    get_response = requests.get(config.QGENDA_GET_ENDPOINT,params=get_request,headers=get_header,timeout=5)
 	    get_response.raise_for_status()
 	except requests.exceptions.HTTPError as errh:
 	    get_error = "Http Error:"+ errh
@@ -86,7 +87,7 @@ def get_pay_record(record):
 		if day_of_week == 5 or day_of_week == 6 and day_filter == '':
 			day_filter = 'wkend'
 
-		work_cats = WorkCategory.objects.filter(group=this_reason['group_id']).filter(Q(day_flag = day_filter) | Q(day_flag = 'any')).values('work_category','start_time','stop_time','rate')
+		work_cats = WorkCategory.objects.filter(group=this_reason['group_id']).filter(Q(day_flag = day_filter) | Q(day_flag = 'any')).values('work_category','start_time','stop_time','points_per_hr')
 
 
 		for row in work_cats:
@@ -95,8 +96,9 @@ def get_pay_record(record):
 			time = round(calculate_duration(pay_window[0],pay_window[1],record.work_start_time.replace(second=0,microsecond=0),record.work_end_time.replace(second=0,microsecond=0)),2)
 
 			if time > 0:
-				pay = pay + time*float(row['rate'])
-				memo.append(str('{0:.2f}'.format(time)) + ' hrs @ $' + str(row['rate'])+'/hr')
+				rate = round(config.DAY_RATE*float(row['points_per_hr']),2)
+				pay = pay + time*rate
+				memo.append(str('{0:.2f}'.format(time)) + ' hrs @ $' + str(rate)+'/hr')
 		if len(memo) > 1:
 			pay_memo = ', '.join(memo)
 		else:

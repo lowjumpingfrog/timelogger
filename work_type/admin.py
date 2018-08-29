@@ -5,8 +5,10 @@ class WorkGroupAdmin(admin.ModelAdmin):
     fields = ['name', 'timestamp', 'updated']
 
 class WorkCategoryAdmin(admin.ModelAdmin):
-    fields = ['name', 'group', 'start_time', 'stop_time', 'points_per_hr', 'daytime_rate_factor', 'rate', 'timestamp', 'updated']
+    list_display =  ('work_category', 'start_time', 'stop_time', 'points_per_hr','rate')
+    readonly_fields = ('rate',)
 
 # Register your models here.
-admin.site.register(WorkCategory)
+admin.site.register(WorkCategory,WorkCategoryAdmin)
+#admin.site.register(WorkCategoryAdmin)
 admin.site.register(WorkGroup)
