@@ -83,8 +83,8 @@ INSTALLED_APPS = [
     'related_admin',
     'import_export',
     'rangefilter',
-    'constance',    
-    'constance.backends.database','
+    'constance',
+    'constance.backends.database',
 ]
 
 MIDDLEWARE = [
