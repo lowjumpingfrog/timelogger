@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% block content %}
+
+<script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+
+<script type="text/javascript">
+	$(document).ready(function() {
+		$('#show_all_table').DataTable();
+	} );
+</script>
+
+<div class="info">
+	<h1>Time Log</h1>
+	<a href='{% url "home" %}'><h2 class="glyphicon glyphicon-home"></h2></a>
+</div>
+			<table id = "show_all_table" style="width:100%" class="table table-bordered">
+				<thead>
+					<tr class="success">
+						<th>Status</th>
+						<th>Reason</th>
+						<th>Start</th>
+						<th>End</th>
+						<th>Time (hh:mm)</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for obj in object_list %}
+					{% if obj.reconciled %}
+					<tr class="bg-info">
+						<td class="text-left">
+							<i class="glyphicon glyphicon-ok-circle text-left"></i>
+						</td>
+					{% else %}
+					<tr class="bg-warning">
+						<td class="text-left">
+							<a href='{% url "timelog:update" pk=obj.id %}'>{{ obj.category }}
+							<i class="glyphicon glyphicon-pencil text-left"></i></a>
+						</td>
+					{% endif %}
+						<td class="text-left">
+							{{ obj.reason }}
+						</td>
+						<td class="text-left">
+							{{ obj.work_start_time }}
+						</td>
+						<td class="text-left">
+							{{ obj.work_end_time }}
+						</td>
+						<td class="text-left">
+							{{ obj.duration }}
+						</td>
+					</tr>
+					{% endfor %}
+				</tbody>
+				<tfoot>
+					<tr class="success">
+						<th>Status</th>
+						<th>Reason</th>
+						<th>Start</th>
+						<th>End</th>
+						<th>Time (hh:mm)</th>
+					</tr>
+				</tfoot>
+			</table>
+{% endblock content %}

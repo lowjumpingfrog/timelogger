@@ -1,0 +1,140 @@
+{% extends "base.html" %}
+{% load duration_filter %}
+{% block content %}
+		<h1>Callback Report</h1>
+		<a href='{{request.META.HTTP_REFERER}}'><h2 class="glyphicon glyphicon-arrow-left"></h2></a>
+		<a href='/admin/timelog/timelog/'><h2 class="glyphicon glyphicon-home"></h2></a>
+			<table style="width:100%" class="table table-hover">
+				<thead>
+					<caption>Pay Summary from: {{ start_date }} to {{ end_date }}</caption>
+					<tr class="success">
+						<th>Name</th>
+						<th>Pay</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for obj in pay_summary %}
+					<tr class="bg-info">
+						<td class="text-left">
+							{{ obj.fullname  }}
+						</td>
+						<td class="text-left">
+							${{ obj.pay }}
+						</td>
+					</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+
+			<table style="width:100%" class="table table-hover">
+				<thead>
+					<caption>Pay Details from: {{ start_date }} to {{ end_date }}</caption>
+					<tr class="success">
+						<th>Name</th>
+						<th>Work Start</th>
+						<th>Work Stop</th>
+						<th>Reason</th>
+						<th>Comment</th>
+						<th>Shift</th>
+						<th>Pay</th>
+						<th>Pay Memo</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for obj in detail_pay %}
+					<tr class="bg-info">
+						<td class="text-left">
+							{{ obj.full_name  }}
+						</td>
+						<td class="text-left">
+							{{ obj.work_start_time }}
+						</td>
+						<td class="text-left">
+							{{ obj.work_end_time }}
+						</td>
+						<td class="text-left">
+							{{ obj.reason }}
+						</td>
+						<td class="text-left">
+							{{ obj.comment }}
+						</td>
+						<td class="text-left">
+							{{ obj.shift }}
+						</td>
+						<td class="text-left">
+							${{ obj.pay }}
+						</td>
+						<td class="text-left">
+							{{ obj.pay_memo }}
+						</td>
+					</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+
+			<table style="width:100%" class="table table-hover">
+				<thead>
+					<caption>Non Billable Summary from: {{ start_date }} to {{ end_date }}</caption>
+					<tr class="success">
+						<th>Name</th>
+						<th>Reason</th>
+						<th>Time</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for obj in other_summary %}
+					<tr class="bg-info">
+						<td class="text-left">
+							{{ obj.fullname  }}
+						</td>
+						<td class="text-left">
+							{{ obj.reason__reason }}
+						</td>
+						<td class="text-left">
+							{{ obj.time|format_duration }}
+						</td>
+					</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+
+			<table style="width:100%" class="table table-hover">
+				<thead>
+					<caption>Non Billable Time Entries: {{ start_date }} to {{ end_date }}</caption>
+					<tr class="success">
+						<th>Name</th>
+						<th>Work Start</th>
+						<th>Work Stop</th>
+						<th>Reason</th>
+						<th>Shift</th>
+						<th>Duration</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for obj in other %}
+					<tr class="bg-info">
+						<td class="text-left">
+							{{ obj.full_name  }}
+						</td>
+						<td class="text-left">
+							{{ obj.work_start_time }}
+						</td>
+						<td class="text-left">
+							{{ obj.work_end_time }}
+						</td>
+						<td class="text-left">
+							{{ obj.reason }}
+						</td>
+						<td class="text-left">
+							{{ obj.shift }}
+						</td>
+						<td class="text-left">
+							{{ obj.duration }}
+						</td>
+						</td>
+					</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+
+{% endblock content %}
