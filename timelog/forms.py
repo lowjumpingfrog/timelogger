@@ -75,7 +75,7 @@ class TimeLogForm(forms.ModelForm):
 		# check for max time
 		if (stop_time - start_time)/timedelta(hours=1) > reason_check.max_time:
 		 	raise forms.ValidationError("Submission for this reason is limited to " + str(reason_check.max_time) + " hours.")
-		'''
+		
 		# Check for overlapping entries
 		start_check = TimeLog.objects.filter(user__username=self.user).filter(work_start_time__range=[start_time,stop_time])
 		stop_check = TimeLog.objects.filter(user__username=self.user).filter(work_end_time__range=[start_time,stop_time])
@@ -97,7 +97,7 @@ class TimeLogForm(forms.ModelForm):
 				break
 		if message != 'good':
 			raise forms.ValidationError(message)
-		'''
+
 
 		# check for duplicates
 		user = cleaned_data.get('user')
