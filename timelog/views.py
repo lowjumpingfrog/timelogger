@@ -134,6 +134,7 @@ class TimeLogUpdateView(LoginRequiredMixin,UpdateView):
 
 	def get_form_kwargs(self):
 		kwargs = super(TimeLogUpdateView, self).get_form_kwargs()
+		kwargs['id'] = self.kwargs.get("pk")
 		kwargs['user'] = self.request.user
 		return kwargs
 

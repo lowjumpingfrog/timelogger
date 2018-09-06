@@ -36,6 +36,7 @@ class TimeLogReportForm(forms.Form):
 
 
 class TimeLogForm(forms.ModelForm):
+
 	class Meta:
 		model = TimeLog
 		fields = [
@@ -61,7 +62,6 @@ class TimeLogForm(forms.ModelForm):
 	def clean(self):
 		cleaned_data = super(TimeLogForm,self).clean()
 		reason_check = Reasons.objects.get(reason = cleaned_data['reason'])
-		print(cleaned_data)
 		#check for needed comment
 		if reason_check.comment_needed and cleaned_data.get('comment') == None:
 			raise forms.ValidationError("This reason needs a meaningful comment.")
@@ -75,10 +75,10 @@ class TimeLogForm(forms.ModelForm):
 		# check for max time
 		if (stop_time - start_time)/timedelta(hours=1) > reason_check.max_time:
 		 	raise forms.ValidationError("Submission for this reason is limited to " + str(reason_check.max_time) + " hours.")
-		
+
 		# Check for overlapping entries
-		start_check = TimeLog.objects.filter(user__username=self.user).filter(work_start_time__range=[start_time,stop_time])
-		stop_check = TimeLog.objects.filter(user__username=self.user).filter(work_end_time__range=[start_time,stop_time])
+		start_check = TimeLog.objects.filter(user__username=self.user).filter(work_start_time__range=[start_time,stop_time]).exclude(pk=self.id)
+		stop_check = TimeLog.objects.filter(user__username=self.user).filter(work_end_time__range=[start_time,stop_time]).exclude(pk=self.id)
 
 		message = 'good'
 
@@ -105,10 +105,12 @@ class TimeLogForm(forms.ModelForm):
 		facility = cleaned_data.get('facility')
 		work_start_time = cleaned_data.get('work_start_time')
 		work_end_time = cleaned_data.get('work_end_time')
+		comment = cleaned_data.get('comment')
 		test = TimeLog.objects.filter(reason = reason,
 								facility = facility,
 								work_start_time = start_time,
-								work_end_time = stop_time).exists()
+								work_end_time = stop_time,
+								comment = comment).exists()
 		if test:
 			raise forms.ValidationError('Duplicate Entry')
 
@@ -140,7 +142,5 @@ class TimeLogForm(forms.ModelForm):
 		    )
 		)
 		self.request = kwargs.pop('request', None)
+		self.id = kwargs.pop('id', None)
 		super(TimeLogForm, self).__init__(*args, **kwargs)
-		#get the users group id
-		#group_id = user.groups.values_list('id', flat=True).first()
-		#self.fields['reason'].queryset = Reasons.objects.filter(group_id=group_id).order_by('reason')
