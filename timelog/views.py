@@ -33,7 +33,6 @@ class ReportView(LoginRequiredMixin, ListView):
 									.filter(pay__gt=0)\
 									.values('user__username')\
 									.annotate(pay=Sum('pay')).annotate(fullname=Concat('user__last_name', Value(', '), 'user__first_name'))
-		print
 		detail_pay = TimeLog.objects.filter(timestamp__range=[dt.datetime.strptime(kwargs['report_start'],'%Y-%m-%d'),
 							dt.datetime.strptime(kwargs['report_end'],'%Y-%m-%d')]).order_by('user__last_name').filter(reconciled=False).filter(pay__gt=0)
 

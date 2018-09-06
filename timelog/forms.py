@@ -61,7 +61,7 @@ class TimeLogForm(forms.ModelForm):
 	def clean(self):
 		cleaned_data = super(TimeLogForm,self).clean()
 		reason_check = Reasons.objects.get(reason = cleaned_data['reason'])
-
+		print(cleaned_data)
 		#check for needed comment
 		if reason_check.comment_needed and cleaned_data.get('comment') == None:
 			raise forms.ValidationError("This reason needs a meaningful comment.")
@@ -75,7 +75,7 @@ class TimeLogForm(forms.ModelForm):
 		# check for max time
 		if (stop_time - start_time)/timedelta(hours=1) > reason_check.max_time:
 		 	raise forms.ValidationError("Submission for this reason is limited to " + str(reason_check.max_time) + " hours.")
-
+		'''
 		# Check for overlapping entries
 		start_check = TimeLog.objects.filter(user__username=self.user).filter(work_start_time__range=[start_time,stop_time])
 		stop_check = TimeLog.objects.filter(user__username=self.user).filter(work_end_time__range=[start_time,stop_time])
@@ -95,9 +95,9 @@ class TimeLogForm(forms.ModelForm):
 			if time_diff > 0:
 				message = "Time entry overlap, you have an entry that starts: " + str(row.work_start_time) + " and ends: " + str(row.work_end_time)
 				break
-
 		if message != 'good':
 			raise forms.ValidationError(message)
+		'''
 
 		# check for duplicates
 		user = cleaned_data.get('user')
